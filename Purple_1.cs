@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -134,6 +134,21 @@ namespace Lab_7
 
 
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         public class Judge
         {
             private string _name;
@@ -144,7 +159,9 @@ namespace Lab_7
             
             public Judge(string name, int[] marks)
             {
+                if (marks == null) _marks = null;
                 _name = name;
+                _marks = new int[marks.Length];
                 Array.Copy(marks, _marks, marks.Length);
             }
             public int CreateMark()
