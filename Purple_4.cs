@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace Lab_7
@@ -38,7 +38,8 @@ namespace Lab_7
             }
             public static void Sort(Sportsman[] array)
             {
-                array = array.OrderBy(x => x._time).ToArray();
+                var copy = array.OrderBy(x => x._time).ToArray();
+                Array.Copy(copy, array, copy.Length);
             }
         }
         public class SkiMan : Sportsman
@@ -94,8 +95,8 @@ namespace Lab_7
 
 
                 if (_sportsmen==null) return;
-                women = _sportsmen.Where(r => r is SkiMan).ToArray();
-                men = _sportsmen.Where(r => r is SkiWoman).ToArray();
+                women = _sportsmen.Where(r => r is SkiWoman).ToArray();
+                men = _sportsmen.Where(r => r is SkiMan).ToArray();
             }
 
             public void Shuffle()
@@ -103,10 +104,10 @@ namespace Lab_7
                 var M = new Sportsman[0];
                 var W = new Sportsman[0];
 
-
-
-                W = W.OrderByDescending(r => r.Time).ToArray();
-                M = M.OrderByDescending(r => r.Time).ToArray();
+                Split(out M, out W);
+                if (M.Length == 0 && W.Length == 0) return;
+                W = W.OrderBy(r => r.Time).ToArray();
+                M = M.OrderBy(r => r.Time).ToArray();
                 var result = new Sportsman[M.Length+W.Length];
                 int i = 0, j = 0, k = 0;
                 bool flag = false;
@@ -129,12 +130,12 @@ namespace Lab_7
                     {
                         if (!flag)
                         {
-                            result[k++] = W[i++];
+                            result[k++] = W[j++];
                             flag = true;
                         }
                         else
                         {
-                            result[k++] = M[j++];
+                            result[k++] = M[i++];
                             flag = false;
                         }
                     }
