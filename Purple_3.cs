@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -217,7 +217,7 @@ namespace Lab_7
             }
             public void Add(Participant[] participants)
             {
-                if (participants == null) return;
+                if (participants == null || participants.Length==0) return;
 
                 Array.Resize(ref _participants, _participants.Length + participants.Length);
                 _participants = _participants.Concat(participants).ToArray();
@@ -246,7 +246,7 @@ namespace Lab_7
             {
                 for (int i = 0; i < _moods.Length; i++)
                 {
-                    _moods[i] += (i + 1) / 10.0;
+                    _moods[i] *= (i + 1 / 100.0);
                 }
             }
 
