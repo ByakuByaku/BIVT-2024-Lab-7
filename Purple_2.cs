@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -48,14 +48,15 @@ namespace Lab_7
             }
             public void Jump(int distance, int[] marks, int target)
             {
-                if (distance == null || marks == null || marks.Length != 5 || distance < 0 || _marks == null)
+                if (distance == 0 || marks == null || marks.Length != 5 || distance < 0 || _marks == null)
                     return;
                 _distance = distance;
                 Array.Copy(marks, _marks, marks.Length);
                 int Points = 60 + (_distance - 120) * 2;
                 if (Points < 0) Points = 0;
                 Result += marks.Sum() - marks.Max() - marks.Min() + Points;
-                if (Result >= target) Result += 60;
+                if (distance >= target)
+                    Result += 60;
 
 
 
@@ -91,18 +92,18 @@ namespace Lab_7
         public abstract class SkiJumping
         {
             private string _name;
-            private int _standart;
+            private int _standard;
             private Participant[] _participants;
 
 
             public string Name => _name;
-            public int Standart => _standart;
+            public int Standard => _standard;
             public Participant[] Participants => _participants;
 
-            public SkiJumping(string name, int standart)
+            public SkiJumping(string name, int standard)
             {
                 _name = name;
-                _standart = standart;
+                _standard = standard;
                 _participants = new Participant[0];
             }
 
@@ -117,7 +118,7 @@ namespace Lab_7
             {
                 if (_participants == null) return;
                 if (participants == null) return;
-                Array.Resize(ref _participants, _participants.Length + participants.Length);
+                
                 _participants = _participants.Concat(participants).ToArray();
             }
 
@@ -130,14 +131,14 @@ namespace Lab_7
                 }
                 if (index < 0) return;
 
-                _participants[index].Jump(distance, marks, _standart);
+                _participants[index].Jump(distance, marks, _standard);
             }
 
             public void Print()
             {
-                if (_participants == null || _name == null || _standart == null) { Console.WriteLine("Так не пойдет"); return; }
+                if (_participants == null || _name == null || _standard == 0) { Console.WriteLine("Так не пойдет"); return; }
                 Console.WriteLine($"Название {_name}");
-                Console.WriteLine($"Стандарт {_standart}");
+                Console.WriteLine($"Стандарт {_standard}");
                 Console.WriteLine($"список участников");
                 foreach (Participant participant in _participants)
                 {
