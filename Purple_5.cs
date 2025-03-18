@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
@@ -203,7 +203,7 @@ namespace Lab_7
 
             public (string, double)[] GetGeneralReport(int question)
             {
-                if (question < 1 || question > 3) 
+                if (question < 1 || question > 3 || _research == null) 
                     return new (string, double)[0];
                 string[] responses = new string[0];
                 foreach (var research in _research)
