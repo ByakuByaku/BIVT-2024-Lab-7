@@ -151,7 +151,7 @@ namespace Lab_7
         }
         public abstract class Skating
         {
-            private Participant[] _participants;
+            protected Participant[] _participants;
             protected double[] _moods;
             public Participant[] Participants => _participants;
             public double[] Moods
@@ -183,7 +183,7 @@ namespace Lab_7
             public void Evaluate(double[] marks)
             {
                 int n = _participants.Length, index = -1;
-                if (marks == null) return;
+                if (marks == null || _participants==null || Moods==null) return;
                 for (int i = 0; i < n; i++)
                 {
                     var participant = _participants[i];
@@ -198,6 +198,7 @@ namespace Lab_7
                 {
                     p.Evaluate(marks[i] * _moods[i]);
                 }
+                _participants[index] = p;
 
             }
             public void Add(Participant p)
@@ -246,7 +247,7 @@ namespace Lab_7
             {
                 for (int i = 0; i < _moods.Length; i++)
                 {
-                    _moods[i] *= (i + 1 / 100.0);
+                    _moods[i] *=   (1 + ((i + 1) / 100.0));
                 }
             }
 
