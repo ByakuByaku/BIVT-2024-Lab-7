@@ -31,16 +31,17 @@ namespace Lab_7
             {
                 if (questionNumber < 1 || questionNumber > 3 || responses == null) return 0;
 
+                var current = this;
                 switch (questionNumber)
                 {
                     case 1:
-                        string answer = _animal;
+                        string answer = current.Animal;
                         return responses.Count(ans => ans.Animal == answer && ans.Animal != null);
                     case 2:
-                        string answer2 = _characterTrait;
+                        string answer2 = current.CharacterTrait;
                         return responses.Count(ans => ans.CharacterTrait == answer2 && ans.CharacterTrait != null);
                     case 3:
-                        string answer3 = _concept;
+                        string answer3 = current.Concept;
                         return responses.Count(ans => ans.Concept == answer3 && ans.Concept != null);
                     default:
                         return 0;
