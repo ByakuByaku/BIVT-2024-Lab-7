@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -63,7 +64,7 @@ namespace Lab_7
 
             public void Evaluate(double result)
             {
-                if (index >= 7 || result == null || _marks == null) return;
+                if (index >= 7 || _marks == null) return;
                 _marks[index++] = result;
             }
 
@@ -167,11 +168,11 @@ namespace Lab_7
             protected abstract void ModificateMood();
             public Skating(double[] moods)
             {
-                if (moods == null)
-                    return;
+                if (moods == null) return;
+
                 _moods = new double[moods.Length];
 
-
+                _participants = new Participant[0];
                 Array.Copy(moods, _moods, _moods.Length);
 
 
@@ -183,11 +184,12 @@ namespace Lab_7
             public void Evaluate(double[] marks)
             {
                 int n = _participants.Length, index = -1;
-                if (marks == null || _participants==null || Moods==null) return;
+                if (marks == null) 
+                    return;
                 for (int i = 0; i < n; i++)
                 {
                     var participant = _participants[i];
-                    if (participant.Marks.All(r => r == 0) || participant.Marks == null)
+                    if (participant.Marks.All(r => r == 0) && participant.Marks != null)
                     {
                         index = i; break;
                     }
@@ -220,8 +222,10 @@ namespace Lab_7
             {
                 if (participants == null || participants.Length==0) return;
 
-                Array.Resize(ref _participants, _participants.Length + participants.Length);
-                _participants = _participants.Concat(participants).ToArray();
+                foreach (Participant p in participants)
+                {
+                    Add(p);
+                }
 
             }
 
@@ -235,7 +239,7 @@ namespace Lab_7
             {
                 for (int i = 0; i < _moods.Length; i++)
                 {
-                    _moods[i] += (i + 1) / 10.0;
+                    _moods[i] += (i + 1.0) / 10.0;
                 }
             }
         }
@@ -247,7 +251,7 @@ namespace Lab_7
             {
                 for (int i = 0; i < _moods.Length; i++)
                 {
-                    _moods[i] *=   (1 + ((i + 1) / 100.0));
+                    _moods[i] *=   ((100.0 + i + 1) / 100.0);
                 }
             }
 
