@@ -101,45 +101,43 @@ namespace Lab_7
 
             public void Shuffle()
             {
+                if (_sportsmen == null) return;
                 var M = new Sportsman[0];
                 var W = new Sportsman[0];
-
+                Sort();
                 Split(out M, out W);
-                if (M.Length == 0 && W.Length == 0) return;
+                if (M.Length == 0 || W.Length == 0) return;
                 W = W.OrderBy(r => r.Time).ToArray();
                 M = M.OrderBy(r => r.Time).ToArray();
-                var result = new Sportsman[M.Length+W.Length];
+                //var result = new Sportsman[M.Length+W.Length];
                 int i = 0, j = 0, k = 0;
                 bool flag = false;
-                while (k != result.Length - 1)
+                if (M[0].Time <= W[0].Time  )
                 {
-                    if (M[0].Time < W[0].Time)
+                    while(i<M.Length && j < W.Length)
                     {
-                        if (!flag)
-                        {
-                            result[k++] = M[i++];
-                            flag = true;
-                        }
-                        else
-                        {
-                            result[k++] = W[j++];
-                            flag = false;
-                        }
-                    }
-                    else
-                    {
-                        if (!flag)
-                        {
-                            result[k++] = W[j++];
-                            flag = true;
-                        }
-                        else
-                        {
-                            result[k++] = M[i++];
-                            flag = false;
-                        }
+                        _sportsmen[k++] = M[i++];
+
+
+                        _sportsmen[k++] = W[j++];
                     }
                 }
+                else
+                {
+                    while (i < M.Length && j < W.Length)
+                    {
+                        _sportsmen[k++] = W[j++];
+                        _sportsmen[k++] = M[i++];
+
+
+                        
+                    }
+                }
+
+                while (i < M.Length) _sportsmen[k++] = M[i++];
+
+                while (j < W.Length) _sportsmen[k++] = W[j++];
+
 
             }
             public void Add(Sportsman sportsman)
@@ -170,8 +168,7 @@ namespace Lab_7
 
             public void Sort()
             {
-                if (_sportsmen != null)
-                    _sportsmen = _sportsmen.OrderBy(r => r.Time).ToArray();
+                if (_sportsmen != null) Array.Copy(_sportsmen.OrderBy(r => r.Time).ToArray(), _sportsmen, _sportsmen.Length);
             }
             public static Group Merge(Group group1, Group group2)
             {
@@ -180,11 +177,11 @@ namespace Lab_7
                 {
                     if (group1.Sportsmen != null)
                     {
-                        Array.Copy(group1._sportsmen, group.Sportsmen, group1._sportsmen.Length);
+                        group._sportsmen = group2._sportsmen;
                     }
                     else if (group2.Sportsmen != null)
                     {
-                        Array.Copy(group2._sportsmen, group.Sportsmen, group2._sportsmen.Length);
+                        group._sportsmen = group1._sportsmen;
                     }
 
                     return group;
