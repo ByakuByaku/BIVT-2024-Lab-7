@@ -201,7 +201,11 @@ namespace Lab_7
 
             public Competition(Judge[] judges)
             {
-                Array.Copy(judges, _judges, judges.Length);
+                _judges = judges != null ? new Judge[judges.Length] : null;
+                if (judges != null)
+                {
+                    Array.Copy(judges, _judges, judges.Length);
+                }
                 _participants = new Participant[0];
             }
             public void Evaluate(Participant jumper)
@@ -227,38 +231,25 @@ namespace Lab_7
             public void Add(Participant[] jumper)
             {
                 if (jumper==null || _participants == null) return;
-                for (int i = 0; i < jumper.Length; i++)
+                foreach (var jumper1 in jumper)
                 {
-                    Evaluate(jumper[i]);
+                    if (jumper1 != null)
+                    {
+                        Evaluate(jumper1);
+                        Array.Resize(ref _participants, _participants.Length + 1);
+                        _participants[_participants.Length - 1] = jumper1;
+                    }
                 }
-                Array.Resize(ref _participants, _participants.Length + jumper.Length);
-                _participants = _participants.Concat(jumper).ToArray();
 
 
             }
             public void Sort()
             {
-                var array = new Participant[ _participants.Length];
-                Array.Copy(_participants, array, _participants.Length);
-                if (array == null || array.Length <= 1)
+                if (_participants == null || _participants.Length <= 1)
                     return;
+                Participant.Sort(_participants);
 
-                for (int i = 0, j = 1; i < array.Length;)
-                {
-                    if (i == 0 || array[i].TotalScore <= array[i - 1].TotalScore)
-                    {
-                        i = j;
-                        j++;
-                    }
-                    else
-                    {
-                        var temp = array[i];
-                        array[i] = array[i - 1];
-                        array[i - 1] = temp;
-                        i--;
-                    }
-                }
-                Array.Copy(array, _participants, _participants.Length);
+
             }
         }
 
