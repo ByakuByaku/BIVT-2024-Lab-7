@@ -52,11 +52,11 @@ namespace Lab_7
                     return;
                 _distance = distance;
                 Array.Copy(marks, _marks, marks.Length);
-                int Points = 60 + (_distance - 120) * 2;
-                if (Points < 0) Points = 0;
-                Result += marks.Sum() - marks.Max() - marks.Min() + Points;
-                if (distance >= target)
-                    Result += 60;
+                int p = 60 + (_distance - target) * 2;
+
+
+                Result += p + marks.Sum() - marks.Max() - marks.Min();
+                if (Result < 0) Result = 0;
 
 
 
@@ -119,7 +119,10 @@ namespace Lab_7
                 if (_participants == null) return;
                 if (participants == null) return;
                 
-                _participants = _participants.Concat(participants).ToArray();
+                foreach (Participant participant in participants)
+                {
+                    Add(participant);
+                }
             }
 
             public void Jump(int distance, int[] marks)
