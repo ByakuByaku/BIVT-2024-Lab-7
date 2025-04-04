@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -204,38 +205,33 @@ namespace Lab_7
 
             public (string, double)[] GetGeneralReport(int question)
             {
-                if (question < 1 || question > 3 || _research == null) 
-                    return new (string, double)[0];
-                string[] responses = new string[0];
-                foreach (var research in _research)
-                {
-                    if (research.Responses != null)
-                    {
-                        foreach (var response in research.Responses)
-                        {
-                            string answer = GetAnswer(response, question);
-                            if (answer!="" && answer!=null)
-                            {
-                                Array.Resize(ref responses, responses.Length+1);
-                                responses[responses.Length-1] = answer;
-                            }
-                        }
-                    }
-                }
-                string[] unique = responses.Distinct().ToArray();
+                if (_research == null || question > 3 || question < 1) return null;
+                //Response[] responses = new Response[0];
+                //foreach (var research in _research)
+                //{
+                //    if (research.Responses != null)
+                //    {
+                //        foreach (var response in research.Responses)
+                //        {
+                //            string answer = GetAnswer(response, question);
+                //            if (answer!="" && answer!=null)
+                //            {
+                //                Array.Resize(ref responses, responses.Length+1);
+                //                responses[responses.Length-1] = answer;
+                //            }
+                //        }
+                //    }
+                //}
+                Response[] responses = _research.SelectMany(r => r.Responses).Where(x => GetAnswer(x, question) != null).ToArray();
+                if  (responses.Count() == 0) return null;
+                //string[] unique = responses.Distinct().ToArray();
 
-                (string, double)[] res = new (string, double)[unique.Length];
+                //(string, double)[] res = new (string, double)[unique.Length];
 
-                for (int i = 0; i < unique.Length; i++)
-                {
-                    res[i] = (unique[i], (double)responses.Count(r => r == unique[i]) / responses.Length * 100);
-                }
+                var res = responses.GroupBy(r => GetAnswer(r, question)).Select(g => (g.Key, (g.Count() * 100.0) / responses.Count())).ToArray();
                 return res;
-
-
-
             }
-            private string GetAnswer(Response A, int question)
+            private static string GetAnswer(Response A, int question)
             {
                 string ans;
                 switch (question)
