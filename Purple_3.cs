@@ -168,12 +168,17 @@ namespace Lab_7
             protected abstract void ModificateMood();
             public Skating(double[] moods)
             {
+                
+                _participants = new Participant[0];
+
                 if (moods == null) return;
 
-                _moods = new double[moods.Length];
+                
 
-                _participants = new Participant[0];
-                Array.Copy(moods, _moods, _moods.Length);
+                int a = Math.Min(moods.Length, 7);
+                _moods = new double[a];
+
+                Array.Copy(moods, _moods, a);
 
 
                 ModificateMood();
@@ -205,16 +210,16 @@ namespace Lab_7
             }
             public void Add(Participant p)
             {
+
                 if (_participants == null)
-                {
-                    _participants = new Participant[1];
-                    _participants[0] = p;
-                }
-                else
-                {
+                { _participants = new Participant[0]; }
+                    
+                
+                
+                
                     Array.Resize(ref _participants, _participants.Length + 1);
                     _participants[_participants.Length - 1] = p;
-                }
+                
 
 
             }
@@ -251,7 +256,7 @@ namespace Lab_7
             {
                 for (int i = 0; i < _moods.Length; i++)
                 {
-                    _moods[i] *=   ((100.0 + i + 1) / 100.0);
+                    _moods[i] *= 1.0 + (double)(i + 1.0) / 100.0;
                 }
             }
 
