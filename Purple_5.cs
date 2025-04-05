@@ -223,7 +223,7 @@ namespace Lab_7
                 //    }
                 //}
                 Response[] responses = _research.SelectMany(r => r.Responses).Where(x => GetAnswer(x, question) != null).ToArray();
-                if  (responses.Count() == 0) return null;
+                
                 //string[] unique = responses.Distinct().ToArray();
 
                 //(string, double)[] res = new (string, double)[unique.Length];
